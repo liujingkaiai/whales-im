@@ -48,3 +48,9 @@ type IAcceptor interface {
 type IStatelistener interface {
 	Disconnect(string) error
 }
+
+type IService interface {
+	ServiceID() string
+	ServiceName() string
+	GetMeta() map[string]string
+}

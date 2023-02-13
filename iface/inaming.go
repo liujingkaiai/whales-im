@@ -6,8 +6,7 @@ type Naming interface {
 }
 
 type ServiceRegistration interface {
-	ServiceID() string
-	ServiceName() string
+	IService
 	//ip or doamin
 	PublicAddress() string
 	PublicPort() int
@@ -15,7 +14,6 @@ type ServiceRegistration interface {
 	GetProtocol() string
 	GetNamespace() string
 	GetTags() []string
-	GetMeta() map[string]string
 	// SetTags(tags []string)
 	// SetMeta(meta map[string]string)
 	String() string
