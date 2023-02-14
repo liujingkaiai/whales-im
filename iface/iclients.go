@@ -5,5 +5,5 @@ type IClientMap interface {
 	Remove(id string)
 	Get(id string) (IClient, bool)
 
-	Services(kvs ...string) []IService
+	Servicies(kvs ...string) []IService
 }

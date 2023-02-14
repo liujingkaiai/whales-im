@@ -23,6 +23,7 @@ const (
 )
 
 type IServer interface {
+	ServiceRegistration
 	//设置握手处理
 	SetAcceptor(IAcceptor)
 	//设置消息监听器
@@ -45,6 +46,7 @@ type IAcceptor interface {
 	Accept(IConn, time.Duration) (string, error)
 }
 
+//断开连接回调函数
 type IStatelistener interface {
 	Disconnect(string) error
 }

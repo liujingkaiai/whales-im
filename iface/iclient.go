@@ -11,8 +11,7 @@ const (
 
 //客户端
 type IClient interface {
-	ID() string
-	Name() string
+	IService
 	//连接服务端
 	Connect(string) error
 	//设置拨号器
