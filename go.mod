@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/gobwas/ws v1.1.0
+	github.com/hashicorp/consul/api v1.8.1
 	github.com/jonboulle/clockwork v0.3.0 // indirect
 	github.com/klintcheng/kim v0.0.0-20221107092516-fb3d0ab084ab
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible

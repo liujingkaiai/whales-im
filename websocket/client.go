@@ -33,6 +33,7 @@ type Client struct {
 	state   int32
 	options ClientOptions
 	dc      *iface.DialerContext
+	Meta    map[string]string
 }
 
 // NewClient NewClient
@@ -48,16 +49,38 @@ func NewClient(id, name string, opts ClientOptions) iface.IClient {
 		id:      id,
 		name:    name,
 		options: opts,
+		Meta:    make(map[string]string),
 	}
 	return cli
 }
 
-func (c *Client) ID() string {
+func NewClientWithProps(id, name string, meta map[string]string, opts ClientOptions) iface.IClient {
+	if opts.WriteWait == 0 {
+		opts.WriteWait = iface.DefaultWriteWait
+	}
+	if opts.ReadWait == 0 {
+		opts.ReadWait = iface.DefaultReadWait
+	}
+
+	cli := &Client{
+		id:      id,
+		name:    name,
+		options: opts,
+		Meta:    meta,
+	}
+	return cli
+}
+
+func (c *Client) ServiceID() string {
 	return c.id
 }
 
-func (c *Client) Name() string {
+func (c *Client) ServiceName() string {
 	return c.name
+}
+
+func (c *Client) GetMeta() map[string]string {
+	return c.Meta
 }
 
 func (c *Client) Connect(addr string) error {

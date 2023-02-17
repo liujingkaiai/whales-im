@@ -1,16 +1,17 @@
 package iface
 
 type Naming interface {
-	//服务发现
-	Find(serviceName string, name ...string) ([]ServiceRegistration, error)
-	//订阅
-	Subscribe(serviceName string, callback func(servicies []ServiceRegistration) error)
-	//退订
-	UnSubscribe(serviceName string) error
+
 	//注册
 	Register(service ServiceRegistration) error
 	//注销
-	Deregister(serviceID string) error
+	Deregister(string) error
+	//服务发现
+	Find(serviceName string, name ...string) ([]ServiceRegistration, error)
+	//订阅
+	Subscribe(serviceName string, callback func(servicies []ServiceRegistration)) error
+	//退订
+	UnSubscribe(serviceName string) error
 }
 
 type ServiceRegistration interface {
