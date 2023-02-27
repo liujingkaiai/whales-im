@@ -3,5 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("hello world")
+	var c interface{}
+	c = "sds"
+
+	switch v := c.(type) {
+	case int:
+		fmt.Println(v)
+	default:
+		fmt.Println()
+	}
 }
