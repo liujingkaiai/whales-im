@@ -89,6 +89,10 @@ func SetSelector(selector iface.Selector) {
 	c.selector = selector
 }
 
+func SetServiceNaming(nm iface.Naming) {
+	c.Name = nm
+}
+
 // 启动容器
 func Start() error {
 	if c.Name == nil {

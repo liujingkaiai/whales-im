@@ -27,3 +27,5 @@ type ServiceRegistration interface {
 	// SetMeta(meta map[string]string)
 	String() string
 }
+
+type IMeta map[string]string

@@ -1,15 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"time"
+)
 
 func main() {
-	var c interface{}
-	c = "sds"
-
-	switch v := c.(type) {
-	case int:
-		fmt.Println(v)
-	default:
-		fmt.Println()
+	for i := 1; i <= 10000; i++ {
+		go func(i int) {
+			fmt.Println(i)
+		}(i)
 	}
+	time.Sleep(10 * time.Second)
+	log.Println("all req done")
 }

@@ -12,6 +12,7 @@ type Channel struct {
 	sync.Mutex
 	id string
 	iface.IConn
+	meta      iface.IMeta
 	writechan chan []byte
 	once      sync.Once
 	writewait time.Duration
@@ -71,6 +72,10 @@ func (ch *Channel) wirteloop() error {
 
 func (ch *Channel) ID() string {
 	return ch.id
+}
+
+func (ch *Channel) GetMeta() iface.IMeta {
+	return ch.meta
 }
 
 func (ch *Channel) Push(payload []byte) error {
