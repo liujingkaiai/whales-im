@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/gobwas/ws v1.1.0
+	github.com/golang/protobuf v1.4.3
 	github.com/hashicorp/consul/api v1.8.1
 	github.com/jonboulle/clockwork v0.3.0 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0
