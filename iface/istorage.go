@@ -13,5 +13,5 @@ type ISessionStorage interface {
 	Delete(account string, channleID string) error
 	Get(string) (*pkt.Session, error)
 	GetLocations(...string) ([]*Location, error)
-	GetLocation(string) (*Location, error)
+	GetLocation(string, string) (*Location, error)
 }
