@@ -7,8 +7,8 @@ import (
 )
 
 type Location struct {
-	ChannelID string
-	GateId    string
+	ChannelID string //网关中的channelID
+	GateId    string //网关ID
 }
 
 func (loc *Location) Bytes() []byte {
