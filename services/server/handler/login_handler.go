@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"im/core"
 	"im/iface"
 	"im/logger"
 
@@ -15,7 +14,7 @@ func NewLoginHandler() *LoginHandler {
 	return &LoginHandler{}
 }
 
-func (h *LoginHandler) DoSysLogin(ctx core.Context) {
+func (h *LoginHandler) DoSysLogin(ctx iface.IContext) {
 	var session pkt.Session
 	if err := ctx.ReadBody(&session); err != nil {
 		ctx.RespWithError(pkt.Status_InvalidPacketBody, err)
@@ -52,7 +51,7 @@ func (h *LoginHandler) DoSysLogin(ctx core.Context) {
 	_ = ctx.Resp(pkt.Status_Success, resp)
 }
 
-func (h *LoginHandler) DoSysLogout(ctx core.Context) {
+func (h *LoginHandler) DoSysLogout(ctx iface.IContext) {
 	logger.WithFields(logger.Fields{
 		"Func":      "Logout",
 		"ChannelId": ctx.Session().GetChannelId(),

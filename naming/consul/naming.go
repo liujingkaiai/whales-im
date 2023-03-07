@@ -116,7 +116,7 @@ func (n *Naming) load(name string, waitIndex uint64, tags ...string) ([]iface.Se
 			Meta:     s.ServiceMeta,
 		}
 	}
-	logger.Debugf("load service: %v, meta:%v", services, meta)
+	logger.Debugf("load service: %v, meta:%#v", services, meta)
 	return services, meta, nil
 }
 

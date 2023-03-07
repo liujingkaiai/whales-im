@@ -98,3 +98,8 @@ func (d *ServerDispatcher) Push(gateway string, channels []string, p *pkt.LogicP
 	p.AddStringMeta(wire.MetaDestChannels, strings.Join(channels, ","))
 	return container.Push(gateway, p)
 }
+
+func (h *ServHandler) Disconnect(id string) error {
+	logger.Warnf("close event of %s", id)
+	return nil
+}
