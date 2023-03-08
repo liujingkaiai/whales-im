@@ -9,7 +9,7 @@ type OpCode int
 
 const (
 	DefaultLoginWait time.Duration = time.Second * 3
-	DefaultReadWait  time.Duration = time.Second * 3
+	DefaultReadWait  time.Duration = time.Minute * 3
 )
 
 // server.go
@@ -40,13 +40,13 @@ type IServer interface {
 	Shutdown(context.Context) error
 }
 
-//服务接受者
+// 服务接受者
 type IAcceptor interface {
 	//返回一个id
 	Accept(IConn, time.Duration) (string, error)
 }
 
-//断开连接回调函数
+// 断开连接回调函数
 type IStatelistener interface {
 	Disconnect(string) error
 }

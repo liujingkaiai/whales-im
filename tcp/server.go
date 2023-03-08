@@ -20,7 +20,7 @@ type ServerOption struct {
 	writewait time.Duration
 }
 
-//tcp server
+// tcp server
 type Server struct {
 	listen string
 	iface.ServiceRegistration
@@ -47,7 +47,7 @@ func NewServer(addr string, service iface.ServiceRegistration) iface.IServer {
 	}
 }
 
-//启动服务
+// 启动服务
 func (srv *Server) Start() error {
 	log := logger.WithFields(logger.Fields{
 		"module": "tcp.server",
@@ -97,7 +97,7 @@ func (srv *Server) Start() error {
 			channel.SetWriteWait(srv.options.writewait)
 
 			srv.ChannelMap.Add(channel)
-			log.Info("accept ", channel)
+			log.Info("accept ", channel.ID())
 			err = channel.Readloop(srv.MessageListener)
 			if err != nil {
 				srv.ChannelMap.Remove(channel.ID())
@@ -116,7 +116,7 @@ func (srv *Server) Start() error {
 	return nil
 }
 
-//根据id给连接发送消息
+// 根据id给连接发送消息
 func (srv *Server) Push(id string, payload []byte) error {
 	channel, ok := srv.ChannelMap.Get(id)
 	if !ok {
@@ -125,7 +125,7 @@ func (srv *Server) Push(id string, payload []byte) error {
 	return channel.Push(payload)
 }
 
-//停止服务
+// 停止服务
 func (s *Server) Shutdown(ctx context.Context) error {
 	log := logger.WithFields(logger.Fields{
 		"module": "tcp.server",

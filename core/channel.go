@@ -110,7 +110,7 @@ func (ch *Channel) Readloop(lst iface.IMessageListener) error {
 		"id":     ch.id,
 	})
 	for {
-		//_ = ch.SetReadDeadline(time.Now().Add(ch.readwait))
+		_ = ch.SetReadDeadline(time.Now().Add(ch.readwait))
 
 		frame, err := ch.ReadFrame()
 		if err != nil {

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"im/iface"
 	"im/logger"
 
@@ -20,7 +21,6 @@ func (h *LoginHandler) DoSysLogin(ctx iface.IContext) {
 		ctx.RespWithError(pkt.Status_InvalidPacketBody, err)
 		return
 	}
-
 	logger.WithFields(logger.Fields{
 		"Func":      "Login",
 		"ChannelId": session.GetChannelId(),
@@ -30,8 +30,11 @@ func (h *LoginHandler) DoSysLogin(ctx iface.IContext) {
 
 	//检测当前用户是否在其他地方登录
 	old, err := ctx.GetLocation(session.Account, "")
+	// fmt.Println(err != iface.ErrSessionNil)
+	fmt.Printf("err != iface.ErrSessionNil 结果:%v \n", err != iface.ErrSessionNil)
+	fmt.Println("err:", err)
 	if err != nil && err != iface.ErrSessionNil {
-		ctx.RespWithError(pkt.Status_SystemException, err)
+		ctx.RespWithError(pkt.Status_SystemException, iface.ErrSessionNil)
 		return
 	}
 

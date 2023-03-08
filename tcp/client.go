@@ -37,6 +37,7 @@ func NewClient(id, name string, opts ClientOptions) iface.IClient {
 	if opts.ReadWait == 0 {
 		opts.ReadWait = iface.DefaultReadWait
 	}
+	fmt.Printf("%#v", opts)
 	cli := &Client{
 		id:      id,
 		name:    name,
@@ -47,6 +48,7 @@ func NewClient(id, name string, opts ClientOptions) iface.IClient {
 }
 
 func NewClientWithProps(id, name string, meta map[string]string, opts ClientOptions) iface.IClient {
+	fmt.Printf("props %#v \n", opts)
 	if opts.WriteWait == 0 {
 		opts.WriteWait = iface.DefaultWriteWait
 	}
@@ -54,6 +56,7 @@ func NewClientWithProps(id, name string, meta map[string]string, opts ClientOpti
 		opts.ReadWait = iface.DefaultReadWait
 	}
 
+	fmt.Printf("after %#v\n", opts)
 	cli := &Client{
 		id:      id,
 		name:    name,
@@ -64,6 +67,7 @@ func NewClientWithProps(id, name string, meta map[string]string, opts ClientOpti
 }
 
 func (c *Client) Connect(addr string) error {
+	fmt.Printf("tcp client options:%#v \n", c.options)
 	if _, err := url.Parse(addr); err != nil {
 		return err
 	}
@@ -107,8 +111,8 @@ func (c *Client) Read() (iface.IFrame, error) {
 		return nil, errors.New("conn is nil")
 	}
 
-	if c.options.ReadWait > 0 {
-		c.conn.SetReadDeadline(time.Now().Add(c.options.ReadWait))
+	if c.options.Heartbeat > 0 {
+		_ = c.conn.SetReadDeadline(time.Now().Add(c.options.ReadWait))
 	}
 	frame, err := c.conn.ReadFrame()
 	if err != nil {

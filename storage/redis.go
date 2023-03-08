@@ -67,6 +67,9 @@ func (r *RedisStorage) GetLocation(account string, device string) (*iface.Locati
 	key := KeyLocation(account, device)
 	bts, err := r.cli.Get(key).Bytes()
 	if err != nil {
+		if err == redis.Nil {
+			return nil, iface.ErrSessionNil
+		}
 		return nil, err
 	}
 	var loc iface.Location

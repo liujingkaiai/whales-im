@@ -164,6 +164,7 @@ func shutdown() error {
 
 // 消息通过网关服务器推送到channel中
 func pushMessage(packet *pkt.LogicPkt) error {
+	fmt.Println(packet.Meta)
 	server, _ := packet.GetMeta(wire.MetaDestServer)
 	if server != c.Srv.ServiceID() {
 		return fmt.Errorf("dest_server is incorrect, %s != %s", server, c.Srv.ServiceID())
@@ -223,18 +224,18 @@ func ForwardWithSelector(serviceName string, packet *pkt.LogicPkt, selector ifac
 func lookup(serviceName string, header *pkt.Header, selector iface.Selector) (iface.IClient, error) {
 	clients, ok := c.srvclients[serviceName]
 	if !ok {
-		return nil, fmt.Errorf("client %s is not regsiter in serve", serviceName)
+		return nil, fmt.Errorf("service %s not found", serviceName)
 	}
-
+	// 只获取状态为StateAdult的服务
 	srvs := clients.Servicies(KeyServiceState, StateAdult)
 	if len(srvs) == 0 {
-		return nil, fmt.Errorf("no servicies for %s", serviceName)
+		return nil, fmt.Errorf("no services found for %s", serviceName)
 	}
-
 	id := selector.Lookup(header, srvs)
 	if cli, ok := clients.Get(id); ok {
 		return cli, nil
 	}
+	fmt.Println("get cli")
 	return nil, fmt.Errorf("no client found")
 }
 
@@ -257,6 +258,7 @@ func connectToService(serviceName string) error {
 			go func(service iface.ServiceRegistration) {
 				time.Sleep(delay)
 				service.GetMeta()[KeyServiceState] = StateAdult
+				fmt.Println(c.srvclients[serviceName])
 			}(service)
 
 			_, err := buildClient(clients, service)
@@ -305,13 +307,15 @@ func buildClient(clients iface.IClientMap, service iface.ServiceRegistration) (i
 	// // 3. 构建客户端并建立连接
 	cli := tcp.NewClientWithProps(id, name, meta, tcp.ClientOptions{
 		Heartbeat: time.Minute,
-		ReadWait:  iface.DefaultReadWait,
-		WriteWait: iface.DefaultWriteWait,
+		ReadWait:  time.Minute * 3,
+		WriteWait: time.Second * 10,
 	})
 	if c.dialer == nil {
 		return nil, fmt.Errorf("dialer is nil")
 	}
+
 	cli.SetDialer(c.dialer)
+
 	err := cli.Connect(service.DialURL())
 	if err != nil {
 		return nil, err

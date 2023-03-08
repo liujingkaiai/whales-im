@@ -1,6 +1,7 @@
 package container
 
 import (
+	"fmt"
 	"im/iface"
 	"im/logger"
 	"sync"
@@ -50,12 +51,15 @@ func (ch *Clients) Servicies(kvs ...string) []iface.IService {
 
 	arr := make([]iface.IService, 0)
 	ch.clients.Range(func(key, value interface{}) bool {
-		ser := value.(iface.IServer)
+		ser := value.(iface.IService)
+		fmt.Println(ser.ServiceName())
+		fmt.Println(ser.GetMeta())
 		if kvLen > 0 && ser.GetMeta()[kvs[0]] != kvs[1] {
 			return true
 		}
 		arr = append(arr, ser)
 		return true
 	})
+	fmt.Println(arr)
 	return arr
 }

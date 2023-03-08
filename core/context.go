@@ -52,7 +52,7 @@ func (c *Context) Resp(status pkt.Status, body proto.Message) error {
 	packet.WriteBody(body)
 	packet.Flag = pkt.Flag_Response
 
-	logger.Debugf("<-- Resp to %s command:%s  status: %v body: %s", c.Session().GetAccount(), &c.request.Header, status, body)
+	logger.Debugf("<-- Resp to %s command:%s  status: %v body: %v", c.Session().GetAccount(), &c.request.Header, status, body)
 	err := c.Push(c.Session().GetGateId(), []string{c.Session().GetChannelId()}, packet)
 	if err != nil {
 		logger.Error(err)

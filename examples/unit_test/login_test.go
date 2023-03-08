@@ -24,6 +24,6 @@ func login(account string) (iface.IClient, error) {
 func Test_login(t *testing.T) {
 	cli, err := login("test1")
 	assert.Nil(t, err)
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 3)
 	cli.Close()
 }
