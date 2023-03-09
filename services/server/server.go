@@ -45,19 +45,23 @@ func RunServerStart(ctx context.Context, opts *ServerStartOptions, version strin
 	logger.Init(logger.Settings{
 		Level: "trace",
 	})
+	//实例化路由
 	r := core.NewRouter()
-	//handler
+	//实例化 登录方法
 	loginHandler := handler.NewLoginHandler()
+	//注册路由
 	r.Handle(wire.CommandLoginSignIn, loginHandler.DoSysLogin)
 	r.Handle(wire.CommandLoginSignOut, loginHandler.DoSysLogout)
-
+	//初始化redis
 	rdb, err := conf.InitRedis(config.RedisAddrs, "")
 	if err != nil {
 		return err
 	}
+	//实例化 session storage 基于redis实现
 	cache := storage.NewRedisStoreage(rdb)
+	//实例化通信层handler
 	servhandler := serv.NewServHandler(r, cache)
-
+	//consul服务配置
 	service := &naming.DefaultService{
 		Id:       config.ServiceID,
 		Name:     opts.serviceName,
@@ -66,7 +70,7 @@ func RunServerStart(ctx context.Context, opts *ServerStartOptions, version strin
 		Protocol: string(wire.ProtocolTCP),
 		Tags:     config.Tags,
 	}
-
+	//构造通信server
 	srv := tcp.NewServer(config.Listen, service)
 	srv.SetReadWait(iface.DefaultReadWait)
 	srv.SetAcceptor(servhandler)

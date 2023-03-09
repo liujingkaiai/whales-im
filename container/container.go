@@ -164,7 +164,6 @@ func shutdown() error {
 
 // 消息通过网关服务器推送到channel中
 func pushMessage(packet *pkt.LogicPkt) error {
-	fmt.Println(packet.Meta)
 	server, _ := packet.GetMeta(wire.MetaDestServer)
 	if server != c.Srv.ServiceID() {
 		return fmt.Errorf("dest_server is incorrect, %s != %s", server, c.Srv.ServiceID())
@@ -189,7 +188,7 @@ func pushMessage(packet *pkt.LogicPkt) error {
 	return nil
 }
 
-// 下行消息-------->push到网关服务
+// 下行消息-------->push到网关服务 [指tcp/websocket服务]
 func Push(server string, p *pkt.LogicPkt) error {
 	p.AddStringMeta(wire.MetaDestServer, server)
 	return c.Srv.Push(server, pkt.Marshal(p))

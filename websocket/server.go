@@ -75,9 +75,10 @@ func (s *Server) Start() error {
 		//鉴权
 		id, err := s.Acceptor.Accept(conn, s.options.loginwait)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("认证失败：", err)
 			_ = conn.WriteFrame(iface.OpClose, []byte(err.Error()))
 			conn.Close()
+			fmt.Println("尝试关闭链接")
 			return
 		}
 

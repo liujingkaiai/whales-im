@@ -27,6 +27,7 @@ func (d *ClientDialer) DialAndHandshake(ctx iface.DialerContext) (net.Conn, erro
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(ctx.Id)
 	// 2. 直接使用封装的JWT包生成一个token
 	tk, err := token.Generate(token.DefaultSecret, &token.Token{
 		Account: ctx.Id,

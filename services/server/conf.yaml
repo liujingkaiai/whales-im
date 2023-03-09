@@ -1,4 +1,4 @@
-ServiceID: chat01
+ServiceID: chat02
 Listen: ":8005"
 PublicAddress: "localhost"
 PublicPort: 8005
