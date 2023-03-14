@@ -44,7 +44,6 @@ func (h *ServHandler) Accept(conn iface.IConn, timeout time.Duration) (string, e
 	var req pkt.InnerHandshakeReq
 	proto.Unmarshal(frame.GetPayload(), &req)
 	log.Info("Accept -- ", req.ServiceId)
-
 	return req.ServiceId, nil
 }
 

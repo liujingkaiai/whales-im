@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/go-redis/redis/v7 v7.4.0
+	github.com/go-resty/resty/v2 v2.6.0
 	github.com/gobwas/ws v1.1.0
 	github.com/golang/protobuf v1.4.3
 	github.com/hashicorp/consul/api v1.8.1
