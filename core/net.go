@@ -1,8 +1,6 @@
-package main
+package core
 
-import (
-	"net"
-)
+import "net"
 
 func GetLocalIP() string {
 	addrs, err := net.InterfaceAddrs()

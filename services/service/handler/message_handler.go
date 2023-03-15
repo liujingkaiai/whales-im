@@ -11,14 +11,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type SeriveHandler struct {
+type ServiceHandler struct {
 	BaseDb    *gorm.DB
 	MessageDb *gorm.DB
 	Cache     *redis.Client
 	Idgen     *database.IDGenerator
 }
 
-func (h *SeriveHandler) InsertUserMessage(c iris.Context) {
+func (h *ServiceHandler) InsertUserMessage(c iris.Context) {
 	var req rpc.InsertMessageReq
 	if err := c.ReadBody(&req); err != nil {
 		c.StopWithError(iris.StatusBadRequest, err)
@@ -71,7 +71,7 @@ func (h *SeriveHandler) InsertUserMessage(c iris.Context) {
 	})
 }
 
-func (h *SeriveHandler) InsertGroupMessage(c iris.Context) {
+func (h *ServiceHandler) InsertGroupMessage(c iris.Context) {
 	var req rpc.InsertMessageReq
 	if err := c.ReadBody(&req); err != nil {
 		c.StopWithError(iris.StatusBadRequest, err)
@@ -128,7 +128,7 @@ func (h *SeriveHandler) InsertGroupMessage(c iris.Context) {
 	})
 }
 
-func (h *SeriveHandler) MessageAck(c iris.Context) {
+func (h *ServiceHandler) MessageAck(c iris.Context) {
 	var req rpc.AckMessageReq
 	if err := c.ReadBody(&req); err != nil {
 		c.StopWithError(iris.StatusBadRequest, err)
@@ -150,7 +150,7 @@ func setMessageAck(cache *redis.Client, account string, messageID int64) error {
 	return cache.Set(key, messageID, wire.OfflineReadIndexExpiresIn).Err()
 }
 
-func (h *SeriveHandler) GetOfflineMessageIndex(c iris.Context) {
+func (h *ServiceHandler) GetOfflineMessageIndex(c iris.Context) {
 	var req rpc.GetOfflineMessageIndexReq
 	if err := c.ReadBody(&req); err != nil {
 		c.StopWithError(iris.StatusBadRequest, err)
@@ -179,7 +179,7 @@ func (h *SeriveHandler) GetOfflineMessageIndex(c iris.Context) {
 	})
 }
 
-func (h *SeriveHandler) GetOfflienMessageContent(c iris.Context) {
+func (h *ServiceHandler) GetOfflineMessageContent(c iris.Context) {
 	var req rpc.GetOfflineMessageContentReq
 	if err := c.ReadBody(&req); err != nil {
 		c.StopWithError(iris.StatusBadRequest, err)
@@ -198,7 +198,7 @@ func (h *SeriveHandler) GetOfflienMessageContent(c iris.Context) {
 	}
 }
 
-func (h *SeriveHandler) getSentTime(account string, msgID int64) (int64, error) {
+func (h *ServiceHandler) getSentTime(account string, msgID int64) (int64, error) {
 	// 1.冷启动，从服务端拉取消息
 	if msgID == 0 {
 		key := database.KeyMessageAckIndex(account)
@@ -225,6 +225,6 @@ func (h *SeriveHandler) getSentTime(account string, msgID int64) (int64, error) 
 	return start, nil
 }
 
-func (h *SeriveHandler) GenarateMessageId() int64 {
+func (h *ServiceHandler) GenarateMessageId() int64 {
 	return h.Idgen.Next().Int64()
 }
